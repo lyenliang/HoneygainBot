@@ -1,0 +1,4 @@
+cookies.json
+local_storage.json
+__pycache__
+*.log

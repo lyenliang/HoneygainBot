@@ -1,0 +1,2 @@
+email = '<YOUR_HONEYGAIN_EMAIL>'
+password = '<YOUR_HONEYGAIN_PASSWORD>'
