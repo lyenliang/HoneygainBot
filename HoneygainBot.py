@@ -1,6 +1,7 @@
 import json
-import os
 import logging
+import os
+import time
 from logging.handlers import RotatingFileHandler
 
 from selenium import webdriver
@@ -59,13 +60,11 @@ class HoneygainBot:
         self.logger.info(f"Logging in ...")
         self.driver.get("https://dashboard.honeygain.com/")
         if os.path.exists(config.cookie_path):
-            # Use cookies and local storage to login
             self.logger.info("Found previous cookies. Use cookies and local storages to login")
             self.load_cookies()
             self.load_local_storages()
-            self.driver.get(self.target_url)
+            self.driver.refresh()
         else:
-            # Cookies not found. Use email and password to login
             # Ref: https://www.selenium.dev/selenium/docs/api/py/webdriver_support/selenium.webdriver.support.expected_conditions.html
             # accept cookie
             self.logger.info("Previous cookies not found. Use email and password to login")
@@ -82,7 +81,7 @@ class HoneygainBot:
             )
             # Submit
             self.driver.find_element(By.XPATH, "//button[@type='submit']").click()
-
+            time.sleep(3)
             self.save_cookies()
             self.save_local_storages()
 
@@ -105,6 +104,7 @@ class HoneygainBot:
         self.driver.find_element(
             By.XPATH, "//div[@id='root']/div[3]/button/span"
         ).click()
+        self.logger.info("Lucky pot button has been clicked.")
 
     def save_cookies(self):
         self.logger.info(f"Saving cookies ...")
