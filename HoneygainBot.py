@@ -100,6 +100,7 @@ class HoneygainBot:
             exit()
         # Open
         self.driver.find_element(By.XPATH, "//div[@id='root']/div[3]/button").click()
+        time.sleep(3)
         # Confirm
         self.driver.find_element(
             By.XPATH, "//div[@id='root']/div[3]/button/span"
