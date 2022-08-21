@@ -90,7 +90,7 @@ class HoneygainBot:
         try:
             # Try your luck
             WebDriverWait(self.driver, 15).until(
-                    EC.visibility_of_element_located((By.XPATH, "//div[@id='root']/div[3]/div/div/div/div[2]/button"))).click()
+                    EC.visibility_of_element_located((By.XPATH, "//div[@id='root']/div[3]/div/div/div/div[2]/button/span"))).click()
 
         except TimeoutException as e:
             # luck pot button not found
