@@ -3,6 +3,8 @@ import logging
 import os
 import time
 from logging.handlers import RotatingFileHandler
+import sys
+import schedule
 
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
@@ -22,9 +24,9 @@ class HoneygainBot:
         self.init_logger()
         self.target_url = "https://dashboard.honeygain.com/"
         options = webdriver.ChromeOptions()
-        options.add_argument("disable-dev-shm-usage")
-        options.add_argument("no-sandbox")
-        options.add_argument('headless')
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--no-sandbox")
+        options.add_argument('--headless')
         chrome_service = Service(ChromeDriverManager().install())
         self.driver = webdriver.Chrome(service=chrome_service, options=options)
         self.driver.implicitly_wait(10)
@@ -79,8 +81,12 @@ class HoneygainBot:
             self.driver.find_element(By.XPATH, "//input[@value='']").send_keys(
                 secrets.password
             )
+            
             # Submit
-            self.driver.find_element(By.XPATH, "//button[@type='submit']").click()
+            if len(self.driver.find_elements(By.XPATH, "//button[@type='submit']")) > 0:
+                self.driver.find_element(By.XPATH, "//button[@type='submit']").click()
+            else:
+                self.driver.find_element(By.XPATH, "//*[@id='root']/div[2]/div/main/div[2]/div/div[2]/div/form/button").click()
             time.sleep(3)
             self.save_cookies()
             self.save_local_storages()
@@ -97,7 +103,7 @@ class HoneygainBot:
             self.logger.warning(
                 f"Lucky pot button not found. You may have participated in the lucky pot game today. Or you didn't share traffic yesterday."
             )
-            exit()
+            return
         # Open
         self.driver.find_element(By.XPATH, "//div[@id='root']/div[3]/button/span").click()
         time.sleep(3)
@@ -141,3 +147,8 @@ class HoneygainBot:
 if __name__ == "__main__":
     honeygain_bot = HoneygainBot()
     honeygain_bot.claim_lucky_pot()
+    if len(sys.argv) > 1 and sys.argv[1] == "true":
+        schedule.every().day.do(honeygain_bot.claim_lucky_pot)
+        while True:
+            schedule.run_pending()
+            time.sleep(10)
