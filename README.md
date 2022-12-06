@@ -9,6 +9,7 @@ This bot uses your Honeygain email and password to login when it runs for its fi
 1. Type your Honeygain email and password in `secrets.py` file.
 
 2. Run `pip install -r requirements.txt` to install required python packages
+    - If running on raspberry pi you will also need to install chromium with `sudo apt install chromium-chromedriver` 
 
 3a. Setup a script to run `python HoneygainBot.py` daily. For example, you may use [crontab](https://crontab.guru/) to trigger this bot
     ```
