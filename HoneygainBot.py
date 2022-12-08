@@ -5,10 +5,12 @@ import time
 from logging.handlers import RotatingFileHandler
 import sys
 import schedule
+import platform
 
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -27,8 +29,13 @@ class HoneygainBot:
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--no-sandbox")
         options.add_argument('--headless')
-        chrome_service = Service(ChromeDriverManager().install())
-        self.driver = webdriver.Chrome(service=chrome_service, options=options)
+        if platform.system() == "Linux" and platform.machine() == "armv7l":
+            # if raspi
+            options.BinaryLocation = ("/usr/bin/chromium-browser")
+            service = Service("/usr/bin/chromedriver")
+        else: # if not raspi and considering you're using Chrome
+            service = Service(ChromeDriverManager().install())
+        self.driver = webdriver.Chrome(service=service, options=options)
         self.driver.implicitly_wait(10)
 
     def init_logger(self):
