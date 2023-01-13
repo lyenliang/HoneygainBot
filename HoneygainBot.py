@@ -79,8 +79,8 @@ class HoneygainBot:
             self.driver.find_element(By.XPATH, "//input[@value='']").send_keys(
                 secrets.password
             )
-            # Submit
-            self.driver.find_element(By.XPATH, "//button[@type='submit']").click()
+            # Login with email
+            self.driver.find_element(By.XPATH, '//*[@id="root"]/div[2]/div/main/div[2]/div/div[2]/div/form/button/span').click()
             time.sleep(3)
             self.save_cookies()
             self.save_local_storages()
@@ -88,24 +88,17 @@ class HoneygainBot:
     def click_lucky_pot_button(self):
         self.logger.info(f"Clicking lucky pot button ...")
         try:
-            # Try your luck
+            # Open Lucky Pot
             WebDriverWait(self.driver, 15).until(
-                    EC.visibility_of_element_located((By.XPATH, "//div[@id='root']/div[3]/div/div/div/div[2]/button/span"))).click()
+                    EC.visibility_of_element_located((By.XPATH, '//*[@id="root"]/div[2]/div[2]/div/main/div/div/div[2]/div/div[1]/div/div/div/div[5]/div/div/button'))).click()
 
         except TimeoutException as e:
-            # luck pot button not found
+            # lucky pot button not found
             self.logger.warning(
-                f"Lucky pot button not found. You may have participated in the lucky pot game today. Or you didn't share traffic yesterday."
+                f"Lucky pot button not found. You may have opened lucky pot, or you haven't shared enough traffic today."
             )
             exit()
-        # Open
-        self.driver.find_element(By.XPATH, "//div[@id='root']/div[3]/button/span").click()
-        time.sleep(3)
-        # Confirm
-        self.driver.find_element(
-            By.XPATH, "//div[@id='root']/div[3]/button/span"
-        ).click()
-        self.logger.info("Lucky pot button has been clicked.")
+        self.logger.info("Lucky pot was opened.")
 
     def save_cookies(self):
         self.logger.info(f"Saving cookies ...")
