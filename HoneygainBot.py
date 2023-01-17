@@ -25,6 +25,13 @@ class HoneygainBot:
         options.add_argument("disable-dev-shm-usage")
         options.add_argument("no-sandbox")
         options.add_argument('headless')
+        options.add_argument("--nogpu")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--window-size=1280,1280")
+        options.add_argument("--enable-javascript")
+        user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36'
+        options.add_argument('user-agent={0}'.format(user_agent))
+        options.add_argument('--disable-blink-features=AutomationControlled')
         chrome_service = Service(ChromeDriverManager().install())
         self.driver = webdriver.Chrome(service=chrome_service, options=options)
         self.driver.implicitly_wait(10)
@@ -87,6 +94,8 @@ class HoneygainBot:
 
     def click_lucky_pot_button(self):
         self.logger.info(f"Clicking lucky pot button ...")
+        # A screenshot is required for headless mode to work
+        self.driver.get_screenshot_as_file('/tmp/screenshot.png')
         try:
             # Open Lucky Pot
             WebDriverWait(self.driver, 15).until(
@@ -95,7 +104,7 @@ class HoneygainBot:
         except TimeoutException as e:
             # lucky pot button not found
             self.logger.warning(
-                f"Lucky pot button not found. You may have opened lucky pot, or you haven't shared enough traffic today."
+                f"Lucky pot button not found. You may have opened lucky pot, or you haven't shared enough traffic today. {e}"
             )
             exit()
         self.logger.info("Lucky pot was opened.")
