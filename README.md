@@ -10,7 +10,7 @@ This bot uses your Honeygain email and password to login when it runs for its fi
 
    `cp secrets.py.template secrets.py`
 
-   This can help you prevent from accidentally committing your Honeygain account password to github.
+   This can help you prevent from accidentally committing your Honeygain email and password to github.
 
 2. Type your Honeygain email and password in `secrets.py` file.
 
