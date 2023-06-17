@@ -1,4 +1,5 @@
 cookies.json
 local_storage.json
+secrets.py
 __pycache__
 *.log

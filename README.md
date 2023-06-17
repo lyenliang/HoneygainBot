@@ -6,11 +6,17 @@ This bot uses your Honeygain email and password to login when it runs for its fi
 
 ## Usage Instructions
 
-1. Type your Honeygain email and password in `secrets.py` file.
+1. Copy `secrets.py.template` file and name the new file as `secrets.py`. 
 
-2. Run `pip install -r requirements.txt` to install required python packages
+   `cp secrets.py.template secrets.py`
 
-3. Setup a script to run `python HoneygainBot.py` daily. For example, you may use [crontab](https://crontab.guru/) to trigger this bot
+   This can help you prevent from accidentally committing your Honeygain email and password to github.
+
+2. Type your Honeygain email and password in `secrets.py` file.
+
+3. Run `pip install -r requirements.txt` to install required python packages
+
+4. Setup a script to run `python HoneygainBot.py` daily. For example, you may use [crontab](https://crontab.guru/) to trigger this bot
     ```
     30 23 * * * /path/to/your/python /path/to/honeygain-bot/HoneygainBot.py`
     ```
